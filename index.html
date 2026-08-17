@@ -21,14 +21,18 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
 .hero .sub{font-size:1.1rem;color:var(--dim);margin-bottom:12px;animation:fadeUp .8s ease .05s both}
 .hero .sub span{color:var(--primary);font-weight:600}
 .hero .info{font-size:.92rem;color:var(--dim);line-height:1.8;margin-bottom:32px;animation:fadeUp .8s ease .1s both}
+.hero .info .copy-item{display:inline-block;cursor:pointer;padding:2px 8px;border-radius:6px;transition:all .2s;position:relative}
+.hero .info .copy-item:hover{background:rgba(108,99,255,.2);color:#fff}
+.hero .info .copy-item:active{transform:scale(.95)}
 .hero .info .hl{color:#00D4FF}
-.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .2s both}
-.btn-primary{display:inline-block;padding:14px 32px;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;border:none;color:#fff;background:linear-gradient(135deg,var(--primary),#8B83FF);box-shadow:0 4px 20px rgba(108,99,255,.4);transition:all .3s;text-decoration:none}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,99,255,.55)}
-.btn-secondary{display:inline-block;padding:14px 32px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:var(--text);background:rgba(255,255,255,.04);transition:all .3s;text-decoration:none}
-.btn-secondary:hover{border-color:rgba(255,255,255,.25);transform:translateY(-2px)}
+.hero .info .copy-tip{font-size:.65rem;color:var(--dim);margin-left:4px;opacity:0;transition:opacity .3s}
+.hero .info .copy-item:hover .copy-tip{opacity:.7}
+.hero .info .copied-msg{display:inline-block;font-size:.7rem;color:#00C896;margin-left:6px;opacity:0;transition:opacity .3s;pointer-events:none}
+.hero .info .copied-msg.show{opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .footer{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:var(--dim);font-size:.85rem}
+.footer .copy-qq{cursor:pointer;transition:color .2s}
+.footer .copy-qq:hover{color:var(--primary)}
 @media(max-width:768px){.nav{padding:14px 20px}}
 </style>
 </head>
@@ -46,17 +50,82 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
     <h1>🏡 村庄农家乐</h1>
     <p class="sub"><span>QM服务器群组</span> · 旗下服务器</p>
     <p class="info">
-      <span class="hl">IP</span> 202604042011A.aternos.me : 61838 &nbsp;·&nbsp; <span class="hl">版本</span> 1.21.11
+      <span class="copy-item" onclick="copyText('202604042011A.aternos.me', this)">
+        <span class="hl">IP</span> 202604042011A.aternos.me
+        <span class="copy-tip">📋 点击复制</span>
+        <span class="copied-msg">✅ 已复制</span>
+      </span>
+      <br>
+      <span class="copy-item" onclick="copyText('61838', this)">
+        <span class="hl">端口</span> 61838
+        <span class="copy-tip">📋 点击复制</span>
+        <span class="copied-msg">✅ 已复制</span>
+      </span>
+      &nbsp;·&nbsp;
+      <span class="copy-item" onclick="copyText('1.21.11', this)">
+        <span class="hl">版本</span> 1.21.11
+        <span class="copy-tip">📋 点击复制</span>
+        <span class="copied-msg">✅ 已复制</span>
+      </span>
     </p>
-    <div class="hero-btns">
-      <a href="https://qm.qq.com/q/644272205" target="_blank" class="btn-primary">加入 QQ 群</a>
-      <a href="minecraft://?addExternalServer=村庄农家乐|202604042011A.aternos.me:61838" class="btn-secondary">一键加服</a>
-    </div>
   </div>
   <div class="footer">
-    <p>© 2026 QM服务器群组 · 村庄农家乐 · QQ群 644272205</p>
+    <p>© 2026 QM服务器群组 · 村庄农家乐 · QQ群 <span class="copy-qq" onclick="copyText('644272205', this)">644272205</span> <span style="font-size:.7rem;color:var(--dim);cursor:pointer" onclick="copyText('644272205', this)">📋</span></p>
   </div>
 </div>
 
+<script>
+function copyText(text, el) {
+  // 复制到剪贴板
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopied(el);
+    }).catch(() => {
+      fallbackCopy(text, el);
+    });
+  } else {
+    fallbackCopy(text, el);
+  }
+}
+
+function fallbackCopy(text, el) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    showCopied(el);
+  } catch (e) {
+    alert('复制失败，请手动复制：' + text);
+  }
+  document.body.removeChild(textarea);
+}
+
+function showCopied(el) {
+  // 找到当前元素内的 .copied-msg
+  const msg = el.querySelector('.copied-msg');
+  if (msg) {
+    msg.classList.add('show');
+    setTimeout(() => {
+      msg.classList.remove('show');
+    }, 2000);
+  } else {
+    // 如果 el 是 QQ 群那样的纯文本节点，用另一种方式
+    const parent = el.closest ? el.closest('.copy-qq') : null;
+    if (parent) {
+      const tip = parent.nextElementSibling;
+      if (tip && tip.textContent.includes('📋')) {
+        tip.textContent = '✅ 已复制';
+        setTimeout(() => {
+          tip.textContent = '📋';
+        }, 2000);
+      }
+    }
+  }
+}
+</script>
 </body>
 </html>
