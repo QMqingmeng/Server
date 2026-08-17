@@ -8,7 +8,6 @@
     *{margin:0;padding:0;box-sizing:border-box}
     :root{--primary:#6C63FF;--accent:#FF6584;--bg:#0D0D2B;--text:#E8E8F0;--dim:#9999BB}
     html,body{height:100%;font-family:'Segoe UI','PingFang SC',sans-serif;background:var(--bg);color:var(--text)}
-    /* 让页面可以滚动 */
     body{overflow-y:auto;padding-top:80px;padding-bottom:80px}
     .bg-orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.25;animation:float 20s ease-in-out infinite alternate;pointer-events:none;z-index:0}
     .orb1{width:600px;height:600px;background:var(--primary);top:-20%;left:-10%}
@@ -25,9 +24,9 @@
     .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.2;margin-bottom:8px;animation:fadeUp .8s ease both}
     .hero .sub{font-size:1.1rem;color:var(--dim);margin-bottom:24px;animation:fadeUp .8s ease .05s both}
     .hero .sub span{color:var(--primary);font-weight:600}
-    .hero .desc{font-size:.95rem;color:var(--dim);line-height:2;margin-bottom:28px;animation:fadeUp .8s ease .1s both}
+    .hero .desc{font-size:.95rem;color:var(--dim);line-height:2;margin-bottom:12px;animation:fadeUp .8s ease .1s both}
     .hero .desc .hl{color:#00D4FF}
-    /* 三列等宽对齐 */
+    .hero .copy-hint{color:#00D4FF;font-size:.85rem;margin-bottom:12px;animation:fadeUp .8s ease .12s both}
     .hero .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;animation:fadeUp .8s ease .15s both}
     .hero .info-grid .item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 10px;transition:all .3s;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80px}
     .hero .info-grid .item:hover{background:rgba(108,99,255,.08);border-color:rgba(108,99,255,.2)}
@@ -44,7 +43,6 @@
     .hero .rules .hl{color:#FF6584}
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     .footer{text-align:center;color:var(--dim);font-size:.85rem;padding:20px 0 40px;position:relative;z-index:1}
-    /* 手机适配 */
     @media(max-width:768px){.nav{padding:14px 20px}.hero .info-grid{grid-template-columns:1fr;gap:10px}.hero .info-grid .item{min-height:70px}}
   </style>
 </head>
@@ -67,8 +65,10 @@
         一个以<span class="hl">休闲、建筑、社交</span>为核心的温馨服务器。<br>
         在这里，你可以远离喧嚣，享受<span class="hl">种田养鸡</span>的田园生活，<br>
         也可以与邻居们一起打造属于你们的<span class="hl">梦想小镇</span>。
-        <br><span class="hl">点击即可复制服务器端口/地址</span>。
       </div>
+
+      <!-- 蓝色提示文字 -->
+      <p class="copy-hint">💡 点击即可复制服务器地址 / 端口</p>
 
       <!-- 三列等宽对齐：版本 | 地址 | 端口 -->
       <div class="info-grid">
