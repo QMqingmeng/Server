@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>村庄农家乐 · QM服务器群组</title>
+  <style>
+    /* ===== 全局重置 & 变量 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --primary: #6C63FF;
+      --accent: #FF6584;
+      --bg: #0D0D2B;
+      --text: #E8E8F0;
+      --dim: #9999BB;
+    }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* ===== 背景光晕 ===== */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: .25;
+      animation: float 20s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb1 {
+      width: 600px;
+      height: 600px;
+      background: var(--primary);
+      top: -20%;
+      left: -10%;
+    }
+    .orb2 {
+      width: 500px;
+      height: 500px;
+      background: var(--accent);
+      bottom: -20%;
+      right: -10%;
+      animation-delay: -8s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(80px, -60px); }
+    }
+
+    /* ===== 导航栏 ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(13, 13, 43, .9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo span {
+      color: var(--primary);
+    }
+    .logo .tag {
+      font-size: .7rem;
+      font-weight: 400;
+      color: var(--dim);
+      margin-left: 8px;
+    }
+    .nav .back-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, .15);
+      background: transparent;
+      color: var(--text);
+      transition: all .25s;
+      text-decoration: none;
+    }
+    .nav .back-btn:hover {
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* ===== 主内容 ===== */
+    .main {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px;
+      overflow-y: auto;
+    }
+    .hero {
+      max-width: 800px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      animation: fadeUp .8s ease both;
+    }
+    .hero .sub {
+      font-size: 1.1rem;
+      color: var(--dim);
+      margin-bottom: 24px;
+      animation: fadeUp .8s ease .05s both;
+    }
+    .hero .sub span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .hero .desc {
+      font-size: .95rem;
+      color: var(--dim);
+      line-height: 2;
+      margin-bottom: 28px;
+      animation: fadeUp .8s ease .1s both;
+    }
+    .hero .desc .hl {
+      color: #00D4FF;
+    }
+    .hero .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+      animation: fadeUp .8s ease .15s both;
+    }
+    .hero .info-grid .item {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 12px;
+      padding: 14px 10px;
+      transition: all .3s;
+    }
+    .hero .info-grid .item:hover {
+      background: rgba(108, 99, 255, .08);
+      border-color: rgba(108, 99, 255, .2);
+    }
+    .hero .info-grid .item .label {
+      font-size: .7rem;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .hero .info-grid .item .value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 4px;
+    }
+    .hero .info-grid .item .value .hl {
+      color: #00D4FF;
+    }
+    .hero .copy-item {
+      display: inline-block;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 6px;
+      transition: all .2s;
+    }
+    .hero .copy-item:hover {
+      background: rgba(108, 99, 255, .2);
+      color: #fff;
+    }
+    .hero .copy-item:active {
+      transform: scale(.95);
+    }
+    .hero .copy-tip {
+      font-size: .6rem;
+      color: var(--dim);
+      margin-left: 4px;
+      opacity: 1;
+    }
+    .hero .copied-msg {
+      display: inline-block;
+      font-size: .7rem;
+      color: #00C896;
+      margin-left: 6px;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    .hero .copied-msg.show {
+      opacity: 1;
+    }
+    .hero .rules {
+      font-size: .85rem;
+      color: var(--dim);
+      line-height: 1.8;
+      margin-bottom: 0;
+      animation: fadeUp .8s ease .2s both;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .hero .rules .hl {
+      color: #FF6584;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: var(--dim);
+      font-size: .85rem;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 14px 20px;
+      }
+      .hero .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 背景光晕 -->
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+
+  <!-- 导航栏 -->
+  <nav class="nav">
+    <a href="#" class="logo">QM<span>服务器群组</span><span class="tag">· 村庄农家乐</span></a>
+    <a href="https://qmqingmeng.github.io/Server/" class="back-btn">🏠 返回主界面</a>
+  </nav>
+
+  <!-- 主内容 -->
+  <div class="main">
+    <div class="hero">
+      <h1>🏡 村庄农家乐</h1>
+      <p class="sub"><span>QM服务器群组</span> · 旗下服务器</p>
+
+      <div class="desc">
+        一个以<span class="hl">休闲、建筑、社交</span>为核心的温馨服务器。<br>
+        在这里，你可以远离喧嚣，享受<span class="hl">种田养鸡</span>的田园生活，<br>
+        也可以与邻居们一起打造属于你们的<span class="hl">梦想小镇</span>。
+      </div>
+
+      <!-- 信息卡片（只保留服务器专属信息） -->
+      <div class="info-grid">
+        <div class="item">
+          <div class="label">🎮 游戏版本</div>
+          <div class="value"><span class="hl">1.21.11</span></div>
+        </div>
+        <div class="item">
+          <div class="label">🌐 服务器地址</div>
+          <div class="value">
+            <span class="copy-item" onclick="copyText('202604042011A.aternos.me', this)">
+              <span class="hl">IP</span> 202604042011A.aternos.me
+              <span class="copy-tip">📋</span>
+              <span class="copied-msg">✅</span>
+            </span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">🔌 端口</div>
+          <div class="value">
+            <span class="copy-item" onclick="copyText('61838', this)">
+              <span class="hl">61838</span>
+              <span class="copy-tip">📋</span>
+              <span class="copied-msg">✅</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 服务器守则 -->
+      <div class="rules">
+        <span class="hl">⛔ 服务器守则</span><br>
+        禁止<span class="hl">破坏</span>他人建筑、禁止<span class="hl">偷窃</span>他人物品、禁止恶意<span class="hl">PVP</span>。<br>
+        保持友善交流，共同维护这个美好的田园社区。
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2026 QM服务器群组 · 村庄农家乐</p>
+    </div>
+  </div>
+
+  <script>
+    // ===== 复制功能 =====
+    function copyText(text, el) {
+      const parent = el.closest ? el.closest('.copy-item') : null;
+      let msg = parent ? parent.querySelector('.copied-msg') : null;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
+        }).catch(() => {
+          fallbackCopy(text, msg);
+        });
+      } else {
+        fallbackCopy(text, msg);
+      }
+    }
+
+    function fallbackCopy(text, msg) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
+      } catch (e) {
+        alert('复制失败，请手动复制：' + text);
+      }
+      document.body.removeChild(textarea);
+    }
+  </script>
+
+</body>
+</html>
