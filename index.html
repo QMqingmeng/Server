@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QQ群官方网站</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#6C63FF;
+  --primary-dark:#5A52D5;
+  --accent:#FF6584;
+  --bg-dark:#0D0D2B;
+  --bg-card:rgba(255,255,255,0.05);
+  --text:#E8E8F0;
+  --text-dim:#9999BB;
+  --glow:0 0 30px rgba(108,99,255,.4);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── Animated Background ── */
+.bg-animation{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-animation .orb{
+  position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;
+  animation:floatOrb 18s ease-in-out infinite alternate;
+}
+.orb:nth-child(1){width:500px;height:500px;background:#6C63FF;top:-10%;left:-5%;animation-duration:20s}
+.orb:nth-child(2){width:400px;height:400px;background:#FF6584;bottom:-10%;right:-5%;animation-duration:16s;animation-delay:-4s}
+.orb:nth-child(3){width:300px;height:300px;background:#00D4FF;top:40%;left:50%;animation-duration:22s;animation-delay:-8s}
+@keyframes floatOrb{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(60px,-80px) scale(1.1)}
+  66%{transform:translate(-40px,60px) scale(.9)}
+  100%{transform:translate(80px,-40px) scale(1.05)}
+}
+
+/* ── Navbar ── */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 48px;
+  background:rgba(13,13,43,.75);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:padding .3s;
+}
+.navbar.scrolled{padding:12px 48px;background:rgba(13,13,43,.92)}
+.logo{font-size:1.4rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.5px}
+.logo span{color:var(--primary)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.92rem;font-weight:500;transition:color .25s;position:relative}
+.nav-links a:hover{color:#fff}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--primary);transition:width .3s;border-radius:2px}
+.nav-links a:hover::after{width:100%}
+.btn-nav{
+  padding:8px 22px;border-radius:8px;font-weight:600;font-size:.9rem;
+  cursor:pointer;border:none;transition:all .25s;text-decoration:none;
+}
+.btn-login{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.15)}
+.btn-login:hover{border-color:var(--primary);color:#fff}
+.btn-register-nav{background:var(--primary);color:#fff;margin-left:4px}
+.btn-register-nav:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:var(--glow)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
+
+/* ── Hero ── */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;
+}
+.hero-content{max-width:720px}
+.hero-badge{
+  display:inline-block;padding:6px 18px;border-radius:50px;
+  background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);
+  font-size:.82rem;color:var(--primary);font-weight:600;margin-bottom:28px;
+  animation:fadeUp .8s ease both;
+}
+.hero h1{
+  font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;line-height:1.15;
+  margin-bottom:24px;letter-spacing:-1px;
+  animation:fadeUp .8s ease .1s both;
+}
+.hero h1 .gradient-text{
+  background:linear-gradient(135deg,#6C63FF 0%,#00D4FF 50%,#FF6584 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{font-size:1.18rem;color:var(--text-dim);line-height:1.75;margin-bottom:40px;animation:fadeUp .8s ease .2s both}
+.hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .3s both}
+.btn-primary{
+  padding:14px 36px;border-radius:12px;font-size:1rem;font-weight:700;
+  cursor:pointer;border:none;color:#fff;
+  background:linear-gradient(135deg,var(--primary),#8B83FF);
+  box-shadow:0 4px 24px rgba(108,99,255,.4);transition:all .3s;text-decoration:none;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(108,99,255,.55)}
+.btn-secondary{
+  padding:14px 36px;border-radius:12px;font-size:1rem;font-weight:600;
+  cursor:pointer;border:1px solid rgba(255,255,255,.12);color:var(--text);
+  background:rgba(255,255,255,.04);transition:all .3s;text-decoration:none;
+}
+.btn-secondary:hover{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08);transform:translateY(-2px)}
+
+/* Floating shapes */
+.floating-shapes{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.shape{position:absolute;border-radius:16px;opacity:.12;animation:floatShape 12s ease-in-out infinite}
+.shape.s1{width:60px;height:60px;background:var(--primary);top:20%;left:10%;animation-delay:0s}
+.shape.s2{width:40px;height:40px;background:var(--accent);top:60%;left:8%;animation-delay:-3s;border-radius:50%}
+.shape.s3{width:80px;height:80px;background:#00D4FF;top:15%;right:12%;animation-delay:-6s}
+.shape.s4{width:50px;height:50px;background:var(--accent);bottom:20%;right:10%;animation-delay:-2s;border-radius:50%}
+.shape.s5{width:30px;height:30px;background:var(--primary);bottom:30%;left:15%;animation-delay:-8s}
+@keyframes floatShape{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-30px) rotate(180deg)}
+}
+
+/* ── Stats ── */
+.stats{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;gap:60px;flex-wrap:wrap;
+  padding:0 24px 80px;
+}
+.stat-item{text-align:center}
+.stat-num{font-size:2.6rem;font-weight:800;color:#fff}
+.stat-num span{color:var(--primary)}
+.stat-label{font-size:.88rem;color:var(--text-dim);margin-top:4px}
+
+/* ── Features ── */
+.features{
+  position:relative;z-index:1;
+  max-width:1100px;margin:0 auto;padding:60px 24px 100px;
+}
+.section-header{text-align:center;margin-bottom:56px}
+.section-header h2{font-size:2.2rem;font-weight:800;margin-bottom:12px}
+.section-header p{color:var(--text-dim);font-size:1.05rem}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.feature-card{
+  background:var(--bg-card);border:1px solid rgba(255,255,255,.06);
+  border-radius:20px;padding:36px 28px;
+  transition:all .35s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  opacity:0;transition:opacity .35s;
+}
+.feature-card:hover{transform:translateY(-6px);border-color:rgba(108,99,255,.2);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{
+  width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;margin-bottom:20px;
+  background:rgba(108,99,255,.12);
+}
+.feature-card h3{font-size:1.2rem;font-weight:700;margin-bottom:10px}
+.feature-card p{color:var(--text-dim);font-size:.93rem;line-height:1.7}
+
+/* ── Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;transition:all .35s;
+}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal{
+  background:#13133A;border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:44px 40px;width:100%;max-width:440px;
+  position:relative;transform:translateY(30px) scale(.96);transition:all .35s;
+  box-shadow:0 40px 80px rgba(0,0,0,.5);
+}
+.modal-overlay.active .modal{transform:translateY(0) scale(1)}
+.modal-close{
+  position:absolute;top:18px;right:18px;width:36px;height:36px;
+  border-radius:10px;border:1px solid rgba(255,255,255,.1);background:transparent;
+  color:var(--text-dim);font-size:1.1rem;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{border-color:var(--accent);color:var(--accent)}
+.modal h2{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.modal .subtitle{color:var(--text-dim);font-size:.9rem;margin-bottom:32px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:.85rem;font-weight:600;color:var(--text-dim);margin-bottom:8px}
+.form-group input{
+  width:100%;padding:13px 16px;border-radius:12px;font-size:.95rem;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);
+  color:#fff;outline:none;transition:all .25s;
+}
+.form-group input:focus{border-color:var(--primary);background:rgba(108,99,255,.06);box-shadow:0 0 0 3px rgba(108,99,255,.12)}
+.form-group input::placeholder{color:rgba(153,153,187,.5)}
+.form-group .error-msg{color:var(--accent);font-size:.8rem;margin-top:6px;display:none}
+.form-group.error input{border-color:var(--accent)}
+.form-group.error .error-msg{display:block}
+.form-row{display:flex;gap:12px}
+.form-row .form-group{flex:1}
+.btn-submit{
+  width:100%;padding:14px;border-radius:12px;font-size:1rem;font-weight:700;
+  cursor:pointer;border:none;color:#fff;margin-top:8px;
+  background:linear-gradient(135deg,var(--primary),#8B83FF);
+  box-shadow:0 4px 20px rgba(108,99,255,.35);transition:all .3s;
+}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,99,255,.5)}
+.btn-submit:active{transform:translateY(0)}
+.modal-footer{text-align:center;margin-top:24px;font-size:.88rem;color:var(--text-dim)}
+.modal-footer a{color:var(--primary);text-decoration:none;font-weight:600;cursor:pointer}
+.modal-footer a:hover{text-decoration:underline}
+.password-toggle{
+  position:relative;
+}
+.password-toggle input{padding-right:48px}
+.toggle-eye{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:1.1rem;transition:color .25s;
+}
+.toggle-eye:hover{color:#fff}
+.password-strength{height:3px;border-radius:3px;margin-top:8px;background:rgba(255,255,255,.06);overflow:hidden}
+.password-strength-bar{height:100%;width:0;border-radius:3px;transition:all .4s}
+.strength-text{font-size:.75rem;margin-top:4px;color:var(--text-dim)}
+
+/* ── Toast ── */
+.toast-container{position:fixed;top:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px}
+.toast{
+  padding:14px 22px;border-radius:12px;font-size:.9rem;font-weight:500;
+  color:#fff;min-width:260px;
+  animation:toastIn .4s ease both;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+.toast.success{background:linear-gradient(135deg,#00C896,#00A67D)}
+.toast.error{background:linear-gradient(135deg,#FF6584,#E84560)}
+.toast.info{background:linear-gradient(135deg,var(--primary),#8B83FF)}
+.toast-exit{animation:toastOut .3s ease both}
+@keyframes toastIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(60px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Footer ── */
+.footer{
+  position:relative;z-index:1;
+  text-align:center;padding:40px 24px;
+  border-top:1px solid rgba(255,255,255,.05);
+  color:var(--text-dim);font-size:.85rem;
+}
+.footer a{color:var(--primary);text-decoration:none}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .navbar{padding:14px 20px}
+  .nav-links{
+    position:fixed;top:0;right:-100%;width:280px;height:100vh;
+    flex-direction:column;background:rgba(13,13,43,.97);
+    backdrop-filter:blur(20px);padding:80px 32px 32px;gap:24px;
+    transition:right .35s;border-left:1px solid rgba(255,255,255,.06);
+  }
+  .nav-links.open{right:0}
+  .hamburger{display:flex}
+  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+  .hamburger.active span:nth-child(2){opacity:0}
+  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+  .stats{gap:32px}
+  .modal{margin:16px;padding:32px 24px}
+  .form-row{flex-direction:column;gap:0}
+}
+
+/* ── Particles ── */
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.particle{
+  position:absolute;width:3px;height:3px;background:rgba(108,99,255,.5);
+  border-radius:50%;animation:rise linear infinite;
+}
+@keyframes rise{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* ── Spinner ── */
+.spinner{
+  width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin .6s linear infinite;display:inline-block;
+  margin-right:8px;vertical-align:middle;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Logged-in state ── */
+.user-avatar{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;
+  position:relative;
+}
+.user-dropdown{
+  position:absolute;top:48px;right:0;background:#1A1A40;border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:8px;min-width:160px;
+  opacity:0;visibility:hidden;transform:translateY(-8px);transition:all .25s;
+  box-shadow:0 12px 40px rgba(0,0,0,.4);
+}
+.user-dropdown.open{opacity:1;visibility:visible;transform:translateY(0)}
+.user-dropdown button{
+  display:block;width:100%;padding:10px 14px;border:none;background:none;
+  color:var(--text);font-size:.88rem;cursor:pointer;border-radius:8px;text-align:left;
+  transition:background .2s;
+}
+.user-dropdown button:hover{background:rgba(255,255,255,.06)}
+.user-dropdown .user-name{font-size:.8rem;color:var(--text-dim);padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-animation">
+  <div class="orb"></div>
+  <div class="orb"></div>
+  <div class="orb"></div>
+</div>
+<div class="particles" id="particles"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="logo">QQ<span>社区</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="#hero">首页</a>
+    <a href="#features">功能</a>
+    <a href="#stats">关于</a>
+    <div id="authButtons">
+      <button class="btn-nav btn-login" onclick="openModal('login')">登录</button>
+      <button class="btn-nav btn-register-nav" onclick="openModal('register')">注册</button>
+    </div>
+    <div id="userInfo" style="display:none">
+      <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()">用</div>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="user-name" id="dropdownName">用户名</div>
+        <button onclick="logout()">退出登录</button>
+      </div>
+    </div>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+    <div class="shape s4"></div>
+    <div class="shape s5"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">🚀 加入我们，共创精彩</div>
+    <h1>欢迎来到我们的<br><span class="gradient-text">QQ社群官网</span></h1>
+    <p>一个充满活力的交流平台，与志同道合的朋友们一起探索、学习、成长。立即注册，开启你的社群之旅。</p>
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="openModal('register')">立即注册</button>
+      <a href="#features" class="btn-secondary">了解更多</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats" id="stats">
+  <div class="stat-item">
+    <div class="stat-num"><span id="memberCount">0</span>+</div>
+    <div class="stat-label">活跃成员</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">24<span>/7</span></div>
+    <div class="stat-label">全天候在线</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span id="postCount">0</span>+</div>
+    <div class="stat-label">每日消息</div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features">
+  <div class="section-header">
+    <h2>为什么选择我们</h2>
+    <p style="color:var(--text-dim)">这里有你想要的一切</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>活跃交流</h3>
+      <p>海量成员实时互动，话题丰富多彩，随时随地都能找到聊得来的朋友。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>安全可靠</h3>
+      <p>严格的信息安全管理机制，保护每一位成员的隐私和数据安全。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>精准匹配</h3>
+      <p>基于兴趣标签的智能推荐，帮你快速找到同好伙伴，不再孤单。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>即时响应</h3>
+      <p>管理员和热心成员随时解答问题，让你感受到社区的温暖与活力。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎉</div>
+      <h3>丰富活动</h3>
+      <p>定期举办线上线下活动，游戏比赛、技术交流、节日庆祝应有尽有。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌟</div>
+      <h3>成长体系</h3>
+      <p>完善的等级和成就系统，记录你的每一次贡献，让努力被看见。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>&copy; 2026 QQ社区 · 用心构建每一个连接 · <a href="#">联系我们</a></p>
+</footer>
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login')">✕</button>
+    <h2>欢迎回来</h2>
+    <p class="subtitle">登录你的账号继续探索</p>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group" id="loginEmailGroup">
+        <label>邮箱地址</label>
+        <input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email">
+        <div class="error-msg" id="loginEmailErr">请输入有效的邮箱地址</div>
+      </div>
+      <div class="form-group" id="loginPasswordGroup">
+        <label>密码</label>
+        <div class="password-toggle">
+          <input type="password" id="loginPassword" placeholder="输入你的密码" autocomplete="current-password">
+          <button type="button" class="toggle-eye" onclick="togglePwd('loginPassword',this)">👁</button>
+        </div>
+        <div class="error-msg" id="loginPasswordErr">密码不能为空</div>
+      </div>
+      <button type="submit" class="btn-submit" id="loginBtn">登 录</button>
+    </form>
+    <div class="modal-footer">
+      还没有账号？<a onclick="switchModal('login','register')">立即注册</a>
+    </div>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('register')">✕</button>
+    <h2>创建账号</h2>
+    <p class="subtitle">加入我们的大家庭</p>
+    <form id="registerForm" onsubmit="handleRegister(event)">
+      <div class="form-group" id="regNameGroup">
+        <label>用户名</label>
+        <input type="text" id="regName" placeholder="设置你的昵称" autocomplete="username">
+        <div class="error-msg" id="regNameErr">用户名至少2个字符</div>
+      </div>
+      <div class="form-group" id="regEmailGroup">
+        <label>邮箱地址</label>
+        <input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email">
+        <div class="error-msg" id="regEmailErr">请输入有效的邮箱地址</div>
+      </div>
+      <div class="form-group" id="regPasswordGroup">
+        <label>密码</label>
+        <div class="password-toggle">
+          <input type="password" id="regPassword" placeholder="至少8位密码" autocomplete="new-password" oninput="checkStrength(this.value)">
+          <button type="button" class="toggle-eye" onclick="togglePwd('regPassword',this)">👁</button>
+        </div>
+        <div class="password-strength"><div class="password-strength-bar" id="strengthBar"></div></div>
+        <div class="strength-text" id="strengthText"></div>
+        <div class="error-msg" id="regPasswordErr">密码至少需要8位字符</div>
+      </div>
+      <div class="form-group" id="regConfirmGroup">
+        <label>确认密码</label>
+        <input type="password" id="regConfirm" placeholder="再次输入密码" autocomplete="new-password">
+        <div class="error-msg" id="regConfirmErr">两次密码不一致</div>
+      </div>
+      <button type="submit" class="btn-submit" id="registerBtn">注 册</button>
+    </form>
+    <div class="modal-footer">
+      已有账号？<a onclick="switchModal('register','login')">立即登录</a>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ── Particles ──
+(function createParticles(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*12)+'s';
+    p.style.animationDelay=(-Math.random()*20)+'s';
+    p.style.width=p.style.height=(2+Math.random()*3)+'px';
+    c.appendChild(p);
+  }
+})();
+
+// ── Navbar scroll ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40);
+});
+
+// ── Mobile menu ──
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('active');
+}
+document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('active');
+}));
+
+// ── Animate numbers ──
+function animateNum(el,target,dur=2000){
+  let start=0;const step=target/dur*16;
+  function tick(){start+=step;if(start>=target){el.textContent=target;return}el.textContent=Math.floor(start)}
+  setInterval(tick,16);
+}
+const io=new IntersectionObserver((e)=>{if(e[0].isIntersecting){animateNum(document.getElementById('memberCount'),2580);animateNum(document.getElementById('postCount'),12600);io.disconnect()}},{threshold:.5});
+io.observe(document.getElementById('stats'));
+
+// ── Modals ──
+function openModal(type){
+  document.getElementById(type+'Modal').classList.add('active');
+  document.body.style.overflow='hidden';
+  if(type==='login') clearForm('loginForm',['loginEmailGroup','loginPasswordGroup']);
+  else clearForm('registerForm',['regNameGroup','regEmailGroup','regPasswordGroup','regConfirmGroup']);
+}
+function closeModal(type){
+  document.getElementById(type+'Modal').classList.remove('active');
+  document.body.style.overflow='';
+}
+function switchModal(from,to){closeModal(from);setTimeout(()=>openModal(to),300)}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{
+  if(e.target===m){closeModal('login');closeModal('register')}
+}));
+
+function clearForm(id,groups){
+  document.getElementById(id).reset();
+  groups.forEach(g=>document.getElementById(g).classList.remove('error'));
+  document.getElementById('strengthBar').style.width='0';
+  document.getElementById('strengthText').textContent='';
+}
+
+// ── Password visibility ──
+function togglePwd(id,btn){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  btn.textContent=inp.type==='password'?'👁':'🙈';
+}
+
+// ── Strength meter ──
+function checkStrength(v){
+  const bar=document.getElementById('strengthBar');
+  const txt=document.getElementById('strengthText');
+  let s=0;
+  if(v.length>=8)s++;if(v.length>=12)s++;
+  if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;
+  s=Math.min(s,4);
+  const colors=['#FF4757','#FF8C42','#FFD32A','#2ED573'];
+  const labels=['太短','弱','一般','强','很强'];
+  bar.style.width=(s/4*100)+'%';
+  bar.style.background=colors[s];
+  txt.textContent=v.length>0?labels[s]:(v.length>=8?'':'至少8位');
+  txt.style.color=colors[s];
+}
+
+// ── Validation helpers ──
+function setError(id,on,msg){
+  const g=document.getElementById(id);
+  g.classList.toggle('error',on);
+  if(msg&&g.querySelector('.error-msg'))g.querySelector('.error-msg').textContent=msg;
+}
+function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)}
+
+// ── Storage (simulated backend) ──
+function getUsers(){return JSON.parse(localStorage.getItem('qq_users')||'{}')}
+function saveUsers(u){localStorage.setItem('qq_users',JSON.stringify(u))}
+function getSession(){return JSON.parse(sessionStorage.getItem('qq_session')||'null')}
+function setSession(u){sessionStorage.setItem('qq_session',JSON.stringify(u))}
+
+// ── Register ──
+function handleRegister(e){
+  e.preventDefault();
+  let ok=true;
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim().toLowerCase();
+  const pwd=document.getElementById('regPassword').value;
+  const confirm=document.getElementById('regConfirm').value;
+
+  if(name.length<2){setError('regNameGroup',true,'用户名至少2个字符');ok=false}
+  else{setError('regNameGroup',false);setError('regNameGroup',false)}
+  if(!isValidEmail(email)){setError('regEmailGroup',true);ok=false}else setError('regEmailGroup',false);
+  if(pwd.length<8){setError('regPasswordGroup',true);ok=false}else setError('regPasswordGroup',false);
+  if(pwd!==confirm){setError('regConfirmGroup',true);ok=false}else setError('regConfirmGroup',false);
+  if(!ok)return;
+
+  const users=getUsers();
+  if(users[email]){showToast('该邮箱已被注册','error');return}
+
+  const btn=document.getElementById('registerBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>注册中...';
+
+  setTimeout(()=>{
+    users[email]={name,password:btoa(pwd),created:new Date().toISOString()};
+    saveUsers(users);
+    btn.disabled=false;btn.textContent='注 册';
+    showToast('注册成功！请登录','success');
+    switchModal('register','login');
+  },800);
+}
+
+// ── Login ──
+function handleLogin(e){
+  e.preventDefault();
+  let ok=true;
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pwd=document.getElementById('loginPassword').value;
+
+  if(!isValidEmail(email)){setError('loginEmailGroup',true);ok=false}else setError('loginEmailGroup',false);
+  if(!pwd){setError('loginPasswordGroup',true);ok=false}else setError('loginPasswordGroup',false);
+  if(!ok)return;
+
+  const btn=document.getElementById('loginBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>登录中...';
+
+  setTimeout(()=>{
+    const users=getUsers();
+    if(!users[email]||atob(users[email].password)!==pwd){
+      showToast('邮箱或密码错误','error');btn.disabled=false;btn.textContent='登 录';return;
+    }
+    setSession({email,name:users[email].name});
+    btn.disabled=false;btn.textContent='登 录';
+    closeModal('login');
+    updateUI();
+    showToast('登录成功，欢迎 '+users[email].name+'！','success');
+  },800);
+}
+
+// ── Logout ──
+function logout(){
+  sessionStorage.removeItem('qq_session');
+  updateUI();showToast('已退出登录','info');
+}
+
+// ── Update UI based on login state ──
+function updateUI(){
+  const s=getSession();
+  const ab=document.getElementById('authButtons');
+  const ub=document.getElementById('userInfo');
+  if(s){
+    ab.style.display='none';ub.style.display='block';
+    const initial=s.name.charAt(0).toUpperCase();
+    document.getElementById('userAvatar').textContent=initial;
+    document.getElementById('dropdownName').textContent=s.name;
+  }else{
+    ab.style.display='flex';ub.style.display='none';
+  }
+}
+
+// ── Dropdown ──
+function toggleDropdown(){
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.user-avatar')&&!e.target.closest('.user-dropdown'))
+    document.getElementById('userDropdown').classList.remove('open');
+});
+
+// ── Toast ──
+function showToast(msg,type='info'){
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  const icons={success:'✓',error:'✕',info:'ℹ'};
+  t.innerHTML=`<span>${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(()=>{t.classList.add('toast-exit');setTimeout(()=>t.remove(),300)},3000);
+}
+
+// ── Init ──
+updateUI();
+</script>
+</body>
+</html>
