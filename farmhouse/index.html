@@ -277,32 +277,28 @@
 
       <!-- 信息卡片（只保留服务器专属信息） -->
       <div class="info-grid">
-        <div class="item">
-          <div class="label">🎮 游戏版本</div>
-          <div class="value"><span class="hl">1.21.11</span></div>
-        </div>
-        <div class="item">
-          <div class="label">🌐 服务器地址</div>
-          <div class="value">
-            <span class="copy-item" onclick="copyText('202604042011A.aternos.me', this)">
-              <span class="hl">IP</span> 202604042011A.aternos.me
-              <span class="copy-tip">📋</span>
-              <span class="copied-msg">✅</span>
-            </span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="label">🔌 端口</div>
-          <div class="value">
-            <span class="copy-item" onclick="copyText('61838', this)">
-              <span class="hl">61838</span>
-              <span class="copy-tip">📋</span>
-              <span class="copied-msg">✅</span>
-            </span>
-          </div>
-        </div>
-      </div>
-
+  <div class="item">
+    <div class="label">🎮 游戏版本</div>
+    <div class="value"><span class="hl">1.21.11</span></div>
+  </div>
+  <div class="item" style="grid-column: 1 / -1;">
+    <div class="label">🌐 服务器地址</div>
+    <div class="value">
+      <span class="copy-item" onclick="copyText('202604042011A.aternos.me', this)">
+        <span class="hl">IP</span> 202604042011A.aternos.me
+        <span class="copy-tip">📋</span>
+        <span class="copied-msg">✅</span>
+      </span>
+      <br>
+      <span class="copy-item" onclick="copyText('61838', this)" style="margin-top:4px;">
+        <span class="hl">端口</span> 61838
+        <span class="copy-tip">📋</span>
+        <span class="copied-msg">✅</span>
+      </span>
+    </div>
+  </div>
+</div>
+      
       <!-- 服务器守则 -->
       <div class="rules">
         <span class="hl">⛔ 服务器守则</span><br>
