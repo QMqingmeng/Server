@@ -15,6 +15,17 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(13,13,43,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
 .logo{font-size:1.4rem;font-weight:800;color:#fff;text-decoration:none}
 .logo span{color:var(--primary)}
+
+/* ===== 右上角下拉菜单 ===== */
+.dropdown{position:relative;display:inline-block}
+.dropdown-btn{padding:8px 20px;border-radius:8px;font-weight:600;font-size:.9rem;cursor:pointer;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text);transition:all .25s}
+.dropdown-btn:hover{border-color:var(--primary);color:#fff}
+.dropdown-content{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#13133A;border:1px solid rgba(255,255,255,.08);border-radius:12px;min-width:180px;box-shadow:0 20px 60px rgba(0,0,0,.5);padding:8px 0;z-index:200}
+.dropdown-content.show{display:block}
+.dropdown-content a{display:block;padding:10px 20px;color:var(--text);text-decoration:none;font-size:.9rem;transition:all .2s;border-radius:4px;margin:0 6px}
+.dropdown-content a:hover{background:rgba(108,99,255,.2);color:#fff}
+.dropdown-content .menu-label{font-size:.65rem;color:var(--dim);padding:6px 20px 4px;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:4px}
+
 .main{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:80px 24px;overflow-y:auto}
 .hero{max-width:800px}
 .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;line-height:1.2;margin-bottom:8px;animation:fadeUp .8s ease both}
@@ -24,7 +35,7 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
 .hero .desc .hl{color:#00D4FF}
 .hero .rules{font-size:.85rem;color:var(--dim);line-height:1.8;margin-bottom:32px;animation:fadeUp .8s ease .15s both;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px 20px}
 .hero .rules .hl{color:#FF6584}
-.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .2s both}
+.hero .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .2s both}
 .btn-primary{display:inline-block;padding:14px 32px;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;border:none;color:#fff;background:linear-gradient(135deg,var(--primary),#8B83FF);box-shadow:0 4px 20px rgba(108,99,255,.4);transition:all .3s;text-decoration:none}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,99,255,.55)}
 .btn-secondary{display:inline-block;padding:14px 32px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:var(--text);background:rgba(255,255,255,.04);transition:all .3s;text-decoration:none}
@@ -32,10 +43,13 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
 .hero .copy-tip{font-size:.6rem;color:var(--dim);margin-left:4px;opacity:1}
 .hero .copied-msg{display:inline-block;font-size:.7rem;color:#00C896;margin-left:6px;opacity:0;transition:opacity .3s;pointer-events:none}
 .hero .copied-msg.show{opacity:1}
+.hero .qq-area{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;animation:fadeUp .8s ease .25s both;margin-top:16px}
+.hero .qq-area .copy-btn{padding:10px 24px;border-radius:10px;font-size:.95rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:var(--text);background:rgba(255,255,255,.04);transition:all .3s}
+.hero .qq-area .copy-btn:hover{border-color:rgba(255,255,255,.25);transform:translateY(-2px)}
+.hero .qq-area .copied-msg{display:inline-block;font-size:.85rem;color:#00C896;opacity:0;transition:opacity .3s;pointer-events:none}
+.hero .qq-area .copied-msg.show{opacity:1}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .footer{position:absolute;bottom:20px;left:0;right:0;text-align:center;color:var(--dim);font-size:.85rem}
-.footer .copy-qq{cursor:pointer;transition:color .2s}
-.footer .copy-qq:hover{color:var(--primary)}
 @media(max-width:768px){.nav{padding:14px 20px}}
 </style>
 </head>
@@ -46,6 +60,13 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
 
 <nav class="nav">
   <a href="#" class="logo">QM<span>服务器群组</span></a>
+  <div class="dropdown">
+    <button class="dropdown-btn" onclick="toggleDropdown()">☰ 旗下服务器</button>
+    <div class="dropdown-content" id="dropdownMenu">
+      <div class="menu-label">QM 服务器群组</div>
+      <a href="https://qmqingmeng.github.io/Server/farmhouse">🏡 村庄农家乐</a>
+    </div>
+  </div>
 </nav>
 
 <div class="main">
@@ -65,31 +86,51 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI','PingFang SC',sans-
       禁止恶意攻击他人，共同维护和谐友善的游戏氛围。
     </div>
 
-    <div class="hero-btns">
+    <div class="btns">
       <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=d%2BUOWm7Ns0sROiFxc3pDNzz4rbI3eDkS7WzCM908RftgXJjCI7RbEV1WfZ6c6qTp&busi_data=eyJncm91cENvZGUiOiI2NDQyNzIyMDUiLCJ0b2tlbiI6IlBRMUI0NEIvbmVpelI3S0JDUkd1RFBxZk1QUFg5OXNCY1RoV054SEkvdmNTZzF3ZDdWSldXUWJ5OVZiVkpmeW0iLCJ1aW4iOiIzODAwNzY1NjQ4In0%3D&data=z9hu1rL_mp6mzdPF96iknThkbOKCL10iHZOCSu9_PK8UDkWQ1LYNlV2Y3y-0i16EkCbqJmv9fqDEjFicjaEg3w&svctype=4&tempid=h5_group_info" target="_blank" class="btn-primary">💬 加入 QQ 群</a>
-      <span class="btn-secondary" style="display:inline-block;padding:14px 32px;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:var(--text);background:rgba(255,255,255,.04);transition:all .3s" onclick="copyText('644272205', this)">📋 复制群号</span>
+      <button class="btn-secondary" onclick="copyText('644272205', this)">📋 复制群号</button>
     </div>
   </div>
 
   <div class="footer">
-    <p>© 2026 QM服务器群组 · QQ群 <span class="copy-qq" onclick="copyText('644272205', this)">644272205</span> <span style="font-size:.7rem;color:var(--dim);cursor:pointer" onclick="copyText('644272205', this)">📋</span></p>
+    <p>© 2026 QM服务器群组</p>
   </div>
 </div>
 
 <script>
+// 下拉菜单
+function toggleDropdown() {
+  const menu = document.getElementById('dropdownMenu');
+  menu.classList.toggle('show');
+}
+// 点击其他地方关闭下拉菜单
+document.addEventListener('click', function(e) {
+  const dropdown = document.querySelector('.dropdown');
+  if (dropdown && !dropdown.contains(e.target)) {
+    document.getElementById('dropdownMenu').classList.remove('show');
+  }
+});
+
+// 复制功能
 function copyText(text, el) {
+  const parent = el.closest ? el.closest('.btns') : null;
+  let msg = parent ? parent.querySelector('.copied-msg') : null;
+  if (!msg) {
+    const qqArea = el.closest ? el.closest('.qq-area') : null;
+    if (qqArea) msg = qqArea.querySelector('.copied-msg');
+  }
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-      showCopied(el);
+      if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
     }).catch(() => {
-      fallbackCopy(text, el);
+      fallbackCopy(text, msg);
     });
   } else {
-    fallbackCopy(text, el);
+    fallbackCopy(text, msg);
   }
 }
 
-function fallbackCopy(text, el) {
+function fallbackCopy(text, msg) {
   const textarea = document.createElement('textarea');
   textarea.value = text;
   textarea.style.position = 'fixed';
@@ -98,28 +139,11 @@ function fallbackCopy(text, el) {
   textarea.select();
   try {
     document.execCommand('copy');
-    showCopied(el);
+    if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
   } catch (e) {
     alert('复制失败，请手动复制：' + text);
   }
   document.body.removeChild(textarea);
-}
-
-function showCopied(el) {
-  let msg;
-  if (el.querySelector) {
-    msg = el.querySelector('.copied-msg');
-  }
-  if (msg) {
-    msg.classList.add('show');
-    setTimeout(() => msg.classList.remove('show'), 2000);
-  } else {
-    const original = el.textContent;
-    if (el.tagName === 'SPAN' && el.style) {
-      el.textContent = '✅ 已复制';
-      setTimeout(() => { el.textContent = original; }, 2000);
-    }
-  }
 }
 </script>
 </body>
