@@ -8,22 +8,18 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--primary:#6C63FF;--accent:#FF6584;--bg:#0D0D2B;--text:#E8E8F0;--dim:#9999BB}
 
-/* 让页面可以滚动 */
 html,body{height:100%;font-family:'Segoe UI','PingFang SC',sans-serif;background:var(--bg);color:var(--text)}
 body{overflow-y:auto;padding-top:80px;padding-bottom:60px}
 
-/* 背景光晕固定 */
 .bg-orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.25;animation:float 20s ease-in-out infinite alternate;pointer-events:none;z-index:0}
 .orb1{width:600px;height:600px;background:var(--primary);top:-20%;left:-10%}
 .orb2{width:500px;height:500px;background:var(--accent);bottom:-20%;right:-10%;animation-delay:-8s}
 @keyframes float{0%{transform:translate(0,0)}100%{transform:translate(80px,-60px)}}
 
-/* 导航栏 */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(13,13,43,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
 .logo{font-size:1.4rem;font-weight:800;color:#fff;text-decoration:none}
 .logo span{color:var(--primary)}
 
-/* 下拉菜单 */
 .dropdown{position:relative;display:inline-block}
 .dropdown-btn{padding:8px 20px;border-radius:8px;font-weight:600;font-size:.9rem;cursor:pointer;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text);transition:all .25s}
 .dropdown-btn:hover{border-color:var(--primary);color:#fff}
@@ -33,11 +29,9 @@ body{overflow-y:auto;padding-top:80px;padding-bottom:60px}
 .dropdown-content a:hover{background:rgba(108,99,255,.2);color:#fff}
 .dropdown-content .menu-label{font-size:.65rem;color:var(--dim);padding:6px 20px 4px;letter-spacing:.5px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:4px}
 
-/* 主内容 - 响应式字体 */
 .main{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px 24px;min-height:calc(100vh - 140px)}
 .hero{max-width:900px;width:100%}
 
-/* ===== 响应式字体：用 clamp() 根据屏幕宽度自动缩放 ===== */
 .hero h1{font-size:clamp(2rem,6vw,4.5rem);font-weight:800;line-height:1.2;margin-bottom:clamp(6px,1vw,12px);animation:fadeUp .8s ease both}
 .hero .sub{font-size:clamp(0.95rem,1.8vw,1.3rem);color:var(--dim);margin-bottom:clamp(16px,2vw,28px);animation:fadeUp .8s ease .05s both}
 .hero .sub span{color:var(--primary);font-weight:600}
@@ -46,7 +40,7 @@ body{overflow-y:auto;padding-top:80px;padding-bottom:60px}
 .hero .rules{font-size:clamp(0.75rem,1.4vw,0.95rem);color:var(--dim);line-height:1.8;margin-bottom:clamp(20px,2.5vw,36px);animation:fadeUp .8s ease .15s both;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:clamp(12px,1.5vw,20px) clamp(14px,2vw,24px)}
 .hero .rules .hl{color:#FF6584}
 .hero .btns{display:flex;gap:clamp(10px,1.5vw,18px);justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .2s both}
-.btn-primary,.btn-secondary{padding:clamp(10px,1.2vw,16px) clamp(20px,2.5vw,40px);border-radius:12px;font-size:clamp(0.85rem,1.4vw,1.05rem);font-weight:700;cursor:pointer;transition:all .3s;text-decoration:none}
+.btn-primary,.btn-secondary{padding:clamp(10px,1.2vw,16px) clamp(20px,2.5vw,40px);border-radius:12px;font-size:clamp(0.85rem,1.4vw,1.05rem);font-weight:700;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
 .btn-primary{border:none;color:#fff;background:linear-gradient(135deg,var(--primary),#8B83FF);box-shadow:0 4px 20px rgba(108,99,255,.4)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(108,99,255,.55)}
 .btn-secondary{border:1px solid rgba(255,255,255,.12);color:var(--text);background:rgba(255,255,255,.04)}
@@ -60,7 +54,6 @@ body{overflow-y:auto;padding-top:80px;padding-bottom:60px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .footer{position:relative;z-index:1;text-align:center;color:var(--dim);font-size:clamp(0.7rem,1vw,0.9rem);padding:16px 20px 30px}
 
-/* 手机适配 */
 @media(max-width:768px){.nav{padding:14px 20px}.nav .logo{font-size:1.1rem}.dropdown-btn{padding:6px 14px;font-size:.8rem}.hero{padding:0 4px}}
 @media(max-width:480px){.nav{padding:10px 14px}.nav .logo{font-size:0.95rem}.dropdown-btn{padding:4px 10px;font-size:.7rem}.hero h1{font-size:clamp(1.6rem,7vw,2.2rem)}}
 </style>
@@ -101,8 +94,8 @@ body{overflow-y:auto;padding-top:80px;padding-bottom:60px}
     <div class="btns">
       <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=d%2BUOWm7Ns0sROiFxc3pDNzz4rbI3eDkS7WzCM908RftgXJjCI7RbEV1WfZ6c6qTp&busi_data=eyJncm91cENvZGUiOiI2NDQyNzIyMDUiLCJ0b2tlbiI6IlBRMUI0NEIvbmVpelI3S0JDUkd1RFBxZk1QUFg5OXNCY1RoV054SEkvdmNTZzF3ZDdWSldXUWJ5OVZiVkpmeW0iLCJ1aW4iOiIzODAwNzY1NjQ4In0%3D&data=z9hu1rL_mp6mzdPF96iknThkbOKCL10iHZOCSu9_PK8UDkWQ1LYNlV2Y3y-0i16EkCbqJmv9fqDEjFicjaEg3w&svctype=4&tempid=h5_group_info" target="_blank" class="btn-primary">💬 加入 QQ 群</a>
       <button class="btn-secondary" onclick="copyText('644272205', this)">📋 复制群号</button>
-      <span class="copied-msg" style="display:inline-block;font-size:clamp(0.75rem,1.1vw,0.9rem);color:#00C896;opacity:0;transition:opacity .3s;pointer-events:none;margin-left:6px">✅ 已复制</span>
     </div>
+    <span class="copied-msg" style="display:inline-block;font-size:clamp(0.75rem,1.1vw,0.9rem);color:#00C896;opacity:0;transition:opacity .3s;pointer-events:none;margin-top:10px">✅ 已复制</span>
   </div>
 </div>
 
@@ -123,8 +116,7 @@ document.addEventListener('click', function(e) {
 });
 
 function copyText(text, el) {
-  const btns = el.closest ? el.closest('.btns') : null;
-  let msg = btns ? btns.querySelector('.copied-msg') : null;
+  const msg = document.querySelector('.copied-msg');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
       if (msg) { msg.style.opacity = '1'; setTimeout(() => msg.style.opacity = '0', 2000); }
