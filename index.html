@@ -6,24 +6,78 @@
 <title>QM服务器群组</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#6C63FF;--accent:#FF6584;--bg:#0D0D2B;--text:#E8E8F0;--dim:#9999BB}
-
+:root{
+  --primary:#6C63FF;
+  --accent:#FF6584;
+  --bg:#0D0D2B;
+  --text:#E8E8F0;
+  --dim:#9999BB;
+  /* 液态玻璃变量 */
+  --glass-bg:rgba(255,255,255,0.08);
+  --glass-blur:20px;
+  --glass-border:rgba(255,255,255,0.12);
+  --glass-shadow:0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+}
 html,body{height:100%;font-family:'Segoe UI','PingFang SC',sans-serif;background:var(--bg);color:var(--text)}
 body{overflow-y:auto;padding:90px 0 40px}
-
 .bg-orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.25;animation:float 20s ease-in-out infinite alternate;pointer-events:none;z-index:0}
 .orb1{width:600px;height:600px;background:var(--primary);top:-20%;left:-10%}
 .orb2{width:500px;height:500px;background:var(--accent);bottom:-20%;right:-10%;animation-delay:-8s}
 @keyframes float{0%{transform:translate(0,0)}100%{transform:translate(80px,-60px)}}
 
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 30px;background:rgba(13,13,43,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);min-height:70px}
+/* 液态毛玻璃通用类 */
+.liquid-glass{
+  background:var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+}
+
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  padding:14px 30px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  min-height:70px;
+  /* 导航栏液态毛玻璃 */
+  background:var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+}
 .logo{font-size:1.3rem;font-weight:800;color:#fff;text-decoration:none}
 .logo span{color:var(--primary)}
+
+.nav-buttons{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.nav-link-btn{
+  padding:6px 16px;border-radius:8px;font-weight:600;font-size:.85rem;
+  cursor:pointer;border:1px solid rgba(255,255,255,.15);
+  background:transparent;color:var(--text);
+  transition:all .25s;
+  text-decoration:none;
+}
+.nav-link-btn:hover{border-color:var(--primary);color:#fff}
 
 .dropdown{position:relative;display:inline-block}
 .dropdown-btn{padding:6px 16px;border-radius:8px;font-weight:600;font-size:.85rem;cursor:pointer;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text);transition:all .25s}
 .dropdown-btn:hover{border-color:var(--primary);color:#fff}
-.dropdown-content{display:none;position:absolute;right:0;top:calc(100% + 6px);background:#13133A;border:1px solid rgba(255,255,255,.08);border-radius:12px;min-width:170px;box-shadow:0 20px 60px rgba(0,0,0,.5);padding:6px 0;z-index:200}
+.dropdown-content{
+  display:none;position:absolute;right:0;top:calc(100% + 6px);
+  border-radius:12px;min-width:170px;
+  padding:6px 0;z-index:200;
+  /* 下拉菜单液态毛玻璃 */
+  background:var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border:1px solid var(--glass-border);
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
 .dropdown-content.show{display:block}
 .dropdown-content a{display:block;padding:8px 18px;color:var(--text);text-decoration:none;font-size:.85rem;transition:all .2s;border-radius:4px;margin:0 4px}
 .dropdown-content a:hover{background:rgba(108,99,255,.2);color:#fff}
@@ -31,13 +85,22 @@ body{overflow-y:auto;padding:90px 0 40px}
 
 .main{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 20px;min-height:calc(100vh - 110px)}
 .hero{max-width:900px;width:100%}
-
 .hero h1{font-size:clamp(1.8rem,5vw,4rem);font-weight:800;line-height:1.2;margin-bottom:8px;animation:fadeUp .8s ease both}
 .hero .sub{font-size:clamp(0.9rem,1.6vw,1.2rem);color:var(--dim);margin-bottom:18px;animation:fadeUp .8s ease .05s both}
 .hero .sub span{color:var(--primary);font-weight:600}
 .hero .desc{font-size:clamp(0.8rem,1.4vw,1.05rem);color:var(--dim);line-height:1.8;margin-bottom:18px;animation:fadeUp .8s ease .1s both}
 .hero .desc .hl{color:#00D4FF}
-.hero .rules{font-size:clamp(0.7rem,1.2vw,0.9rem);color:var(--dim);line-height:1.8;margin-bottom:24px;animation:fadeUp .8s ease .15s both;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px 18px}
+.hero .rules{
+  font-size:clamp(0.7rem,1.2vw,0.9rem);color:var(--dim);line-height:1.8;margin-bottom:24px;
+  animation:fadeUp .8s ease .15s both;
+  /* 规则面板液态毛玻璃 */
+  border-radius:12px;padding:14px 18px;
+  background:var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+}
 .hero .rules .hl{color:#FF6584}
 .hero .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .2s both}
 .btn-primary,.btn-secondary{padding:12px 28px;border-radius:12px;font-size:clamp(0.8rem,1.2vw,1rem);font-weight:700;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block}
@@ -47,47 +110,54 @@ body{overflow-y:auto;padding:90px 0 40px}
 .btn-secondary:hover{border-color:rgba(255,255,255,.25);transform:translateY(-2px)}
 .hero .copied-msg{display:inline-block;font-size:clamp(0.7rem,1vw,0.85rem);color:#00C896;opacity:0;transition:opacity .3s;pointer-events:none;margin-top:10px}
 .hero .copied-msg.show{opacity:1}
-
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .footer{position:relative;z-index:1;text-align:center;color:var(--dim);font-size:clamp(0.65rem,0.9vw,0.85rem);padding:10px 20px 20px}
-
-@media(max-width:768px){.nav{padding:10px 16px;min-height:60px}.logo{font-size:1.1rem}.dropdown-btn{padding:5px 12px;font-size:.75rem}.hero{padding:0 6px}.main{padding:6px 12px}}
-@media(max-width:480px){.nav{padding:8px 12px;min-height:54px}.logo{font-size:0.95rem}.dropdown-btn{padding:4px 10px;font-size:.7rem}.hero h1{font-size:clamp(1.5rem,6vw,2rem)}.btn-primary,.btn-secondary{padding:10px 18px;font-size:.8rem}}
+@media(max-width:768px){
+  .nav{padding:10px 16px;min-height:60px}
+  .logo{font-size:1.1rem}
+  .nav-link-btn,.dropdown-btn{padding:5px 12px;font-size:.75rem}
+  .hero{padding:0 6px}.main{padding:6px 12px}
+}
+@media(max-width:480px){
+  .nav{padding:8px 12px;min-height:54px}
+  .logo{font-size:0.95rem}
+  .nav-link-btn,.dropdown-btn{padding:4px 10px;font-size:.7rem}
+  .hero h1{font-size:clamp(1.5rem,6vw,2rem)}
+  .btn-primary,.btn-secondary{padding:10px 18px;font-size:.8rem}
+}
 </style>
 </head>
 <body>
-
 <div class="bg-orb orb1"></div>
 <div class="bg-orb orb2"></div>
-
 <nav class="nav">
   <a href="#" class="logo">QM<span>服务器群组</span></a>
-  <div class="dropdown">
-    <button class="dropdown-btn" onclick="toggleDropdown()">☰ 旗下服务器</button>
-    <div class="dropdown-content" id="dropdownMenu">
-      <div class="menu-label">QM 服务器群组</div>
-      <a href="https://qmqingmeng.github.io/Server/farmhouse">🏡 村庄农家乐</a>
+  <div class="nav-buttons">
+    <!-- 新增网页版MC入口，在旗下服务器左边 -->
+    <a href="https://qmqingmeng.github.io/Server/Minecraft/1.8.8" target="_blank" class="nav-link-btn">🎮网页版MC</a>
+    <div class="dropdown">
+      <button class="dropdown-btn" onclick="toggleDropdown()">☰ 旗下服务器</button>
+      <div class="dropdown-content" id="dropdownMenu">
+        <div class="menu-label">QM 服务器群组</div>
+        <a href="https://qmqingmeng.github.io/Server/farmhouse">🏡 村庄农家乐</a>
+      </div>
     </div>
   </div>
 </nav>
-
 <div class="main">
   <div class="hero">
     <h1>🚀 QM 服务器群组</h1>
     <p class="sub">一个由玩家共建的 <span>Minecraft</span> 服务器集合</p>
-
     <div class="desc">
       我们致力于为不同风格的玩家提供稳定、友善的游戏环境。<br>
       无论你是<span class="hl">生存建筑党</span>、<span class="hl">红石技术宅</span>，还是<span class="hl">休闲养老玩家</span>，<br>
       这里总有适合你的一片天地。
     </div>
-
     <div class="rules">
       <span class="hl">⛔ 社区守则</span><br>
       本群组禁止发布或传播任何<span class="hl">色情</span>、<span class="hl">血腥暴力</span>、<span class="hl">政治敏感</span>内容，<br>
       禁止恶意攻击他人，共同维护和谐友善的游戏氛围。
     </div>
-
     <div class="btns">
       <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=d%2BUOWm7Ns0sROiFxc3pDNzz4rbI3eDkS7WzCM908RftgXJjCI7RbEV1WfZ6c6qTp&busi_data=eyJncm91cENvZGUiOiI2NDQyNzIyMDUiLCJ0b2tlbiI6IlBRMUI0NEIvbmVpelI3S0JDUkd1RFBxZk1QUFg5OXNCY1RoV054SEkvdmNTZzF3ZDdWSldXUWJ5OVZiVkpmeW0iLCJ1aW4iOiIzODAwNzY1NjQ4In0%3D&data=z9hu1rL_mp6mzdPF96iknThkbOKCL10iHZOCSu9_PK8UDkWQ1LYNlV2Y3y-0i16EkCbqJmv9fqDEjFicjaEg3w&svctype=4&tempid=h5_group_info" target="_blank" class="btn-primary">💬 加入 QQ 群</a>
       <button class="btn-secondary" onclick="copyText('644272205', this)">📋 复制群号</button>
@@ -95,11 +165,9 @@ body{overflow-y:auto;padding:90px 0 40px}
     <span class="copied-msg" id="copiedMsg">✅ 已复制</span>
   </div>
 </div>
-
 <div class="footer">
   <p>© 2026 QM服务器群组</p>
 </div>
-
 <script>
 function toggleDropdown() {
   document.getElementById('dropdownMenu').classList.toggle('show');
@@ -110,7 +178,6 @@ document.addEventListener('click', function(e) {
     document.getElementById('dropdownMenu').classList.remove('show');
   }
 });
-
 function copyText(text) {
   const msg = document.getElementById('copiedMsg');
   const doCopy = () => {
